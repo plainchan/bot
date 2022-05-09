@@ -1,0 +1,5 @@
+<launch>
+	<include file="$(find bot_imu)/launch/imu.launch" />
+	<node pkg="bot_imu" type="echo_imu_data.sh" name="sub_spec"  output="screen"/>
+
+</launch>

@@ -1,0 +1,5 @@
+<launch>
+	<arg name="imu_package" default="0x91" doc="package type [0x91,0x62]"/>
+	<include file="$(find bot_imu)/launch/imu_$(arg imu_package)_msg.launch"/>
+	
+</launch>

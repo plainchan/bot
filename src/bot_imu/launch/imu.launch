@@ -1,0 +1,3 @@
+<launch>
+	<node pkg="bot_imu" type="serial_imu" name="imu" output="screen"/>
+</launch>

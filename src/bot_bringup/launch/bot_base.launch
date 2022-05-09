@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="port_name"          value="can0" />
+    <arg name="odom_frame"         default="odom" />
+    <arg name="base_frame"         default="base_link" />
+    <arg name="odom_topic_name"    default="odom" />
+    <arg name="is_scout_mini"      default="false" />
+    <arg name="is_omni_wheel"      default="false" />
+    <arg name="simulated_robot"    value="false" />
+    
+
+    <node pkg="bot_bringup" type="scout_base_node" name="bot_base_node">
+        <param name="port_name"          type="string"   value="$(arg port_name)" />
+        <param name="odom_frame"         type="string"   value="$(arg odom_frame)" />
+        <param name="base_frame"         type="string"   value="$(arg base_frame)" />
+        <param name="odom_topic_name"    type="string"   value="$(arg odom_topic_name)" />
+        <param name="is_scout_mini"      type="bool"     value="$(arg is_scout_mini)" />
+        <param name="is_omni_wheel"      type="bool"     value="$(arg is_omni_wheel)" />
+        <param name="simulated_robot"    type="bool"     value="$(arg simulated_robot)" />
+    </node>
+
+</launch>

@@ -1,0 +1,5 @@
+<launch>
+	<include file="$(find bot_imu)/launch/imu.launch" />
+	<node pkg="bot_imu" name="display_3D_node" type="display_3D_node.py" output="screen"/>
+		
+</launch>

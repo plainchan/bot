@@ -1,0 +1,4 @@
+<launch>
+	<include file="$(find bot_imu)/launch/imu.launch" />
+	<node pkg="rviz" type="rviz"  name="rviz_imu" args="-d $(find bot_imu)/rviz/view_imu.rviz"/>
+</launch>

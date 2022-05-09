@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+    <include file="$(find bot_description)/launch/bot_description.launch" />
+    <node pkg="rviz" type="rviz" name="rviz"  args="-d $(find bot_description)/rviz/view_bot.rviz"/>
+
+</launch>

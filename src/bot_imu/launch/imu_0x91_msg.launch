@@ -1,0 +1,4 @@
+<launch>
+	<include file="$(find bot_imu)/launch/imu.launch" />
+	<node pkg="bot_imu" name="sub_0x91" type="sub_0x91" output="screen"/>
+</launch>

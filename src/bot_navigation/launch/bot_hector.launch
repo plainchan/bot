@@ -75,7 +75,7 @@
 
     
     <!-- run rviz -->
-    <node pkg="rviz" type="rviz" name="rviz" args="-d  $(find bot_navigation)/rviz/view_map.rviz" />
+    <node pkg="rviz" type="rviz" name="rviz" args="-d  $(find bot_navigation)/rviz/bot_navi.rviz" />
 
 
 </launch>

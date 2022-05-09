@@ -2,6 +2,10 @@
 
 <launch>
 
+    <arg name="use_rslidar" default="true" />
+     <!-- start  Lidar scan -->
+    <include if="$(arg use_rslidar)" file="$(find bot_rslidar)/launch/bot_points2laser.launch" />
+    <include unless="$(arg use_rslidar)" file="$(find bot_ydlidar)/launch/ydlidar.launch" />
     <!--  gmapping node-->
     <arg name="scan_topic" default="scan" />
     <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
@@ -12,8 +16,8 @@
 
         map_update_interval: 0.5 # Publish new map
 
-        maxUrange: 5.5 # Should be just less than sensor range
-        maxRange: 6.1 # Should be just greater than sensor range
+        maxUrange: 100 # Should be just less than sensor range  max usable range
+        maxRange: 130 # Should be just greater than sensor range
         particles: 100 # Increased from 80
 
         # Update frequencies
@@ -23,10 +27,10 @@
         resampleThreshold: 0.5
 
         # Initial Map Size
-        xmin: -100.0
-        ymin: -100.0
-        xmax: 100.0
-        ymax: 100.0
+        xmin: -50.0
+        ymin: -50.0
+        xmax: 50.0
+        ymax: 50.0
         delta: 0.05
 
         # All default

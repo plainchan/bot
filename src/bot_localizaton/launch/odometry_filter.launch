@@ -1,0 +1,9 @@
+<?xml version="1.0"?
+
+<launch>
+
+    <node pkg="robot_localization" type = "ekf_localization_node" name="odom_filter" >
+        <rosparam command="load" file="$(find bot_localization)/config/odom_filter.yaml"
+    </node>
+
+</launch>

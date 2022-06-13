@@ -206,7 +206,7 @@ void publish_0x91_data(raw_t *data, bot_imu::Imu_0x91_msg *data_imu)
 void publish_imu_data(raw_t *data, sensor_msgs::Imu *imu_data)
 {	
 	tf2::Quaternion qtn;
-    qtn.setEulerZYX((data->imu[data->nimu - 1].eul[2])* DEG_TO_RAD,data->imu[data->nimu - 1].eul[0]* DEG_TO_RAD,data->imu[data->nimu - 1].eul[1]* DEG_TO_RAD);
+    qtn.setRPY((data->imu[data->nimu - 1].eul[1])* DEG_TO_RAD/100.0,data->imu[data->nimu - 1].eul[0]* DEG_TO_RAD/100.0,data->imu[data->nimu - 1].eul[2]* DEG_TO_RAD/10.0);
     
 	imu_data->orientation.x = qtn.getX();
 	imu_data->orientation.y = qtn.getY();

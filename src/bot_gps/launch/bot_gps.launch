@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="nmea_navsat_driver" pkg="nmea_navsat_driver" type="nmea_socket_driver" output="screen">
+      <param name="ip" value="10.7.5.55"/>
+      <param name="port" value="5555" />
+      <param name="frame_id" value="map" />
+      <param name="use_GNSS_time" value="False" />
+      <param name="time_ref_source" value="gps" />
+      <param name="useRMC" value="False" />
+      <!--
+      <remap from="fix" to="/gps/fix" />
+      <remap from="heading" to="/gps/heading" />
+      <remap from="heading_rmc" to="/gps/heading_rmc" />
+      -->
+    </node>
+  </group>
+</launch>

@@ -28,6 +28,9 @@ int main(int argc, char **argv) {
   int sim_rate = 50;
   bool is_scout_mini = false;
 
+  bool publish_wheel_path = false;
+  std::string wheel_path_topic;
+
   private_node.param<std::string>("port_name", port_name, std::string("can0"));
   private_node.param<std::string>("odom_frame", odom_frame,
                                   std::string("odom"));
@@ -39,6 +42,10 @@ int main(int argc, char **argv) {
   private_node.param<std::string>("odom_topic_name", odom_topic_name,
                                   std::string("odom"));
   private_node.param<bool>("is_scout_mini", is_scout_mini, false);
+
+  private_node.param<std::string>("wheel_path_topic", wheel_path_topic,
+                                  std::string("wheel_path"));
+  private_node.param<bool>("publish_wheel_path", publish_wheel_path, false);
 
   if (is_scout_mini) {
     ROS_INFO("Robot base: Scout Mini");
@@ -77,6 +84,10 @@ int main(int argc, char **argv) {
     messenger->SetOdometryFrame(odom_frame);
     messenger->SetBaseFrame(base_frame);
     messenger->SetOdometryTopicName(odom_topic_name);
+
+    messenger->SetWheelPathTopicName(wheel_path_topic);
+    messenger->enableWheelPathPublish(publish_wheel_path);
+    
     if (is_simulated) messenger->SetSimulationMode();
 
     // connect to robot and setup ROS subscription

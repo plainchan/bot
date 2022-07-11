@@ -15,6 +15,7 @@
 
 #include <ros/ros.h>
 #include <nav_msgs/Odometry.h>
+#include <nav_msgs/Path.h>
 #include <tf/transform_datatypes.h>
 #include <tf2_ros/transform_broadcaster.h>
 
@@ -34,13 +35,16 @@ class ScoutMessenger {
   void SetBaseFrame(std::string frame) { base_frame_ = frame; }
   void SetOdometryTopicName(std::string name) { odom_topic_name_ = name; }
 
+  void SetWheelPathTopicName(std::string name) { wheel_path_topic_ = name; }
+  void enableWheelPathPublish(bool en){publish_wheel_path_ = en;}
+
   void SetSimulationMode() { simulated_robot_ = true; }
 
   void SetupSubscription() {
     // odometry publisher
     odom_pub_ = nh_->advertise<nav_msgs::Odometry>(odom_topic_name_, 50);
     status_pub_ = nh_->advertise<bot_msgs::ScoutStatus>("/scout_status", 10);
-
+    wheel_path_pub_ = nh_->advertise<nav_msgs::Path>(wheel_path_topic_, 10);
     // cmd subscriber
     motion_cmd_sub_ = nh_->subscribe<geometry_msgs::Twist>(
         "/cmd_vel", 5, &ScoutMessenger::TwistCmdCallback, this);
@@ -83,6 +87,14 @@ class ScoutMessenger {
   ros::Subscriber motion_cmd_sub_;
   ros::Subscriber light_cmd_sub_;
   tf2_ros::TransformBroadcaster tf_broadcaster_;
+
+
+  //path
+  ros::Publisher wheel_path_pub_;
+  nav_msgs::Path  wheel_path_;
+  std::string wheel_path_topic_;
+  bool publish_wheel_path_;
+
 
   // speed variables
   double position_x_ = 0.0;
@@ -205,6 +217,32 @@ class ScoutMessenger {
     odom_msg.twist.twist.angular.z = angular_speed;
 
     odom_pub_.publish(odom_msg);
+
+    if(publish_wheel_path_)
+    {
+      static bool initHeader = true;
+      if(initHeader)
+      {
+        wheel_path_.header.frame_id = odom_frame_;
+        wheel_path_.header.stamp = ros::Time::now();
+        initHeader = false;
+      }
+      geometry_msgs::PoseStamped cur_pose;
+
+      cur_pose.header.frame_id = odom_frame_;
+      cur_pose.header.stamp = ros::Time::now();
+
+      cur_pose.pose.position.x = position_x_;
+      cur_pose.pose.position.y = position_y_;
+      cur_pose.pose.position.z = 0.0;
+      cur_pose.pose.orientation = odom_quat;
+      wheel_path_.poses.emplace_back(cur_pose);
+
+      wheel_path_pub_.publish(wheel_path_);
+    }
+
+
+    
   }
 
   void PublishStateToROS() {

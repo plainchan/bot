@@ -13,5 +13,4 @@
       <remap from="heading_rmc" to="/gps/heading_rmc" />
       -->
     </node>
-  </group>
 </launch>

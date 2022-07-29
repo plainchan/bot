@@ -35,8 +35,6 @@ class ScoutMessenger {
   void SetBaseFrame(std::string frame) { base_frame_ = frame; }
   void SetOdometryTopicName(std::string name) { odom_topic_name_ = name; }
 
-  void SetWheelPathTopicName(std::string name) { wheel_path_topic_ = name; }
-  void enableWheelPathPublish(bool en){publish_wheel_path_ = en;}
 
   void SetSimulationMode() { simulated_robot_ = true; }
 
@@ -218,31 +216,6 @@ class ScoutMessenger {
 
     odom_pub_.publish(odom_msg);
 
-    if(publish_wheel_path_)
-    {
-      static bool initHeader = true;
-      if(initHeader)
-      {
-        wheel_path_.header.frame_id = odom_frame_;
-        wheel_path_.header.stamp = ros::Time::now();
-        initHeader = false;
-      }
-      geometry_msgs::PoseStamped cur_pose;
-
-      cur_pose.header.frame_id = odom_frame_;
-      cur_pose.header.stamp = ros::Time::now();
-
-      cur_pose.pose.position.x = position_x_;
-      cur_pose.pose.position.y = position_y_;
-      cur_pose.pose.position.z = 0.0;
-      cur_pose.pose.orientation = odom_quat;
-      wheel_path_.poses.emplace_back(cur_pose);
-
-      wheel_path_pub_.publish(wheel_path_);
-    }
-
-
-    
   }
 
   void PublishStateToROS() {

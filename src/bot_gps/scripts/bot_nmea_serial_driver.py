@@ -59,6 +59,8 @@ def main():
     frame_id = RosNMEADriver.get_frame_id()
 
     decoder = protocol_parse.Decoder()
+
+    # rate = rospy.Rate(1000);
     
 
     try:
@@ -69,14 +71,18 @@ def main():
             while not rospy.is_shutdown():
 
                 count = sp.in_waiting()
+                nmea_buff = None
                 if count >0:
                     buff = sp.read(count)
-                    for i in range(len(buff)):
-                        data = decoder.parse_stream(buff[i])
+                    nmea_buff = decoder.parse_stream(buff)
+
+                if nmea_buff == None:
+                    continue
                 
                 try:
-                    nmea_str = data.decode('ascii')
+                    nmea_str = nmea_buff.decode('ascii')
                     driver.add_sentence(nmea_str, frame_id)
+                    # rate.sleep();
                 except UnicodeError as e:
                     rospy.logwarn("Skipped reading a line from the serial device because it could not be "
                                   "decoded as an ASCII string. The bytes were {0}".format(data))
